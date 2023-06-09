@@ -1,63 +1,61 @@
-# Bike Sharing Demand Project Report
+# Report: Predict Bike Sharing Demand with AutoGluon Solution
+#### SASIKA AMARASINGHE
 
-_by Sasika Amarasinghe_
+## Initial Training
+### What did you realize when you tried to submit your predictions? What changes were needed to the output of the predictor to submit your results?
 
-____
+I got a Kaggle score of `1.80812` which is a higher value meaning that the predictions of the model are not that good. 
+To reduce the Kaggle score, feature engineering and hyperparameter tuning was needed.
 
-- Here in each of these models, the evaluation metric was set as "Mean Squared Error".
-- Lower the "Mean Squared Error" , higher the accuracy of the model is.
+### What was the top ranked model that performed?
 
-## Evaluation of models in each submission
+* WeightedEnsemble_L3
 
-### 1. Training models as it is
-![Initial models](./images/initial_models.png)
+## Exploratory data analysis and feature creation
+### What did the exploratory analysis find and how did you add additional features?
 
-### 2. Trainig models after adding new features
-![Second models](./images/2_new_features_models.png)
+After doing EDA, we could realise that 'atemp' and 'temp' show a normal distribution. In addition to that 'windspeed','casual','registered' and 'count' which is the target values represent a biased distribution towards lower values.
 
-### 3. Third Models after adding new features and tuning hyperparameters
-![Initial models](./images/3_hpo_models.png)
+`day`, `month`, `hour` were added aa separate features. 
+`season` and `weather` featues were assigned as _categorial values_.
 
-- According to all the above diagrams, the best model is `WeightedEnsemble_L3` which comprises of several models. 
+### How much better did your model perform after adding additional features and why do you think that is?
 
-- In addition to that, as a whole after adding new features to the training dataset and tuning hyperparameters, the "Mean Squared Error" has been reduced in the second entry.
+After adding additional features, the predictions got a score of `0.66995`. This is a drastic difference. 
 
-After doing EDA, I have been able to fit the models to the datasets more accurately reducing the evaluation metric value. 
+There can be underlying patterns which affects the target values in the added new features (`day`, `month`, `hour`)
 
-![](./images/model_train_score.png)
-
-The above chart shows that the evaluation metric score of `WeightedEnsemble_L3` model has been reduced compared to the initial model of that kind.
-____
-
-![](./images/model_test_score.png)
-
-The above chart shows that the evaluation metric score of `WeightedEnsemble_L3` model on test dataset (Kaggle score) has been reduced. meaning it has performed very well after adding features and tuning hyperparameters.  
-
-The changed hyperparameters are included in the follwoing table for GBM, CAT & RF models. 
-
-![Hyperparameters table evaluation](./images/hyperparameters_table.png)
+After assigning `season` and `weather` as categorical values, models can capture non-linear relationships in data.
 
 
-_Tuned hyperparameters_
+## Hyper parameter tuning
+### How much better did your model preform after trying different hyper parameters?
+TODO: Add your explanation
+After hyperparameter tuning, I got a Kaggle score of `0.48124`. Although this is not a drastic change with respective the value that I got after adding new features, model has shown a considerably higher performance than before.
 
+### If you were given more time with this dataset, where do you think you would spend more time?
 
-`GBM` - Generalized Boosted Regression Models
+If I get more time with this dataset, I'll focus more on feature engineering. I believe it will affect immensely for the performance of the model because of the significant improve in the model performance it showed earlier.
 
-- learning rate was reduced, therefore converged to the slowly to the minimum point of  the curve of Cost with respecive to the weights values.
-- num_iterations was increased, therfore the model will be trained more iterations.
+### Create a table with the models you ran, the hyperparameters modified, and the kaggle score.
+|model|GBM|CAT|RF|score|
+|--|--|--|--|--|
+|initial|Default|Default|Default|1.80812|
+|add_features|Default|Default|Default|0.66995|
+|hpo|learning_rate = 0.05, num_iteration = 120|learning_rate = 0.01, depth = 8|n_estimators = 120|0.48124|
 
-`CAT` - CAT Boost models
-- learning rate was reduced, therefore converged to the slowly to the minimum point of  the curve of Cost with respecive to the weights values.
-- depth was increased, this allows the model to capture complex relationships in the trainig data. 
+### Create a line plot showing the top model score for the three (or more) training runs during the project.
 
-`RF` - Random Forest models
-- n_estimators was increased, therfore the number of trees in the model and training time were increased. This leads to the less sensitive to the training data and resulting better performance of the dataset. 
+![model_train_score.png](./img/model_train_score.png)
 
-_After feature engineering the Kaggle score has reduced._
-* Because 'hour', 'month', 'day' features were added.
-* Some features were set as categorical values.
+### Create a line plot showing the top kaggle score for the three (or more) prediction submissions during the project.
 
-_After tuning hyperparameters, the Kaggle score has further reduced._
-* The hyperparameters were tuned, like mentioned above.
+![model_test_score.png](./img/model_test_score.png)
 
-Overall, this has led to a better performance of the models.
+## Summary
+
+There was a significant performance improvement of the model after doing feature engineering.The performance of the model was further increased by hyperparameter tuning.
+
+`WeightedEnsemble_L3` was the model that showed best performance in the intial state, after doing feature engineering to the dataset and after tuning hyperparameters of the model. 
+
+The Kaggle score for the predictions and "Squared Mean Error"  which was the evaluation metirc of models were reduced in each state as shown in the above figure. Finally, the models performed much better than the initial states.
